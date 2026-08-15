@@ -1,0 +1,35 @@
+services:
+  # 1. FastAPI AI Microservice
+  - type: web
+    name: mediassist-ai-service
+    env: docker
+    dockerContext: ./ai-service
+    dockerfilePath: ./ai-service/Dockerfile
+    plan: free
+    healthCheckPath: /api/v1/health
+
+  # 2. Spring Boot Backend API
+  - type: web
+    name: mediassist-backend
+    env: docker
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: AI_SERVICE_URL
+        fromService:
+          type: web
+          name: mediassist-ai-service
+          property: hostpath
+          suffix: /api/v1
+      - key: JWT_SECRET
+        value: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      - key: JWT_EXPIRATION
+        value: 86400000
+      - key: DB_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
