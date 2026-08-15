@@ -42,7 +42,11 @@ export const AiAssistant = () => {
     scrollToBottom();
   }, [messages, loading]);
 
-  const generateId = (prefix) => `${prefix}-${Math.random().toString(36).substring(2, 9)}`;
+  const msgCounterRef = useRef(100);
+  const generateId = (prefix) => {
+    msgCounterRef.current += 1;
+    return `${prefix}-${msgCounterRef.current}`;
+  };
 
   const handleSend = async (textToSend) => {
     const query = textToSend || input;
