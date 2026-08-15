@@ -10,9 +10,7 @@ import {
   Plus,
   X,
   CheckCircle2,
-  Zap,
-  HelpCircle,
-  Thermometer
+  HelpCircle
 } from 'lucide-react';
 
 export const SymptomChecker = () => {

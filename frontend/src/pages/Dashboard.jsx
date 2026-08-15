@@ -18,9 +18,7 @@ import {
   Clock,
   Plus,
   Bot,
-  ShieldCheck,
   Zap,
-  TrendingUp,
   ShieldAlert,
   PhoneCall
 } from 'lucide-react';
