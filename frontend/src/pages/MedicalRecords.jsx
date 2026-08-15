@@ -31,21 +31,22 @@ export const MedicalRecords = () => {
   const [uploading, setUploading] = useState(false);
   const [fileValidationError, setFileValidationError] = useState('');
 
-  const fetchRecords = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await medicalRecordService.getRecords();
-      setRecords(data || []);
-    } catch (err) {
-      setError('Failed to fetch medical records vault.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchRecords();
+    let isMounted = true;
+    medicalRecordService.getRecords()
+      .then((data) => {
+        if (isMounted) {
+          setRecords(data || []);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setError('Failed to fetch medical records vault.');
+          setLoading(false);
+        }
+      });
+    return () => { isMounted = false; };
   }, []);
 
   // Validation rules matching backend limits
@@ -102,7 +103,7 @@ export const MedicalRecords = () => {
       setTitle('');
       setDescription('');
       setSelectedFile(null);
-      fetchRecords();
+      medicalRecordService.getRecords().then((data) => setRecords(data || []));
     } catch (err) {
       setError(
         err.response?.data?.message || err.response?.data?.error || 'Failed to upload medical record.'
@@ -119,8 +120,8 @@ export const MedicalRecords = () => {
     try {
       await medicalRecordService.deleteRecord(id);
       setActionSuccess('Record deleted successfully.');
-      fetchRecords();
-    } catch (err) {
+      medicalRecordService.getRecords().then((data) => setRecords(data || []));
+    } catch {
       setError('Failed to delete medical record.');
     }
   };

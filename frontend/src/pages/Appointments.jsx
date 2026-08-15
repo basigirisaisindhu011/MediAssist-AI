@@ -4,12 +4,10 @@ import {
   Calendar,
   Clock,
   Plus,
-  XCircle,
   Loader2,
   AlertCircle,
   Stethoscope,
-  CheckCircle2,
-  User
+  CheckCircle2
 } from 'lucide-react';
 
 export const Appointments = () => {
@@ -37,7 +35,7 @@ export const Appointments = () => {
     try {
       const data = await appointmentService.getAppointments();
       setAppointments(data || []);
-    } catch (err) {
+    } catch {
       setError('Failed to load appointments. Please check backend connection.');
     } finally {
       setLoading(false);
@@ -45,7 +43,21 @@ export const Appointments = () => {
   };
 
   useEffect(() => {
-    fetchAppointments();
+    let isMounted = true;
+    appointmentService.getAppointments()
+      .then((data) => {
+        if (isMounted) {
+          setAppointments(data || []);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setError('Failed to load appointments. Please check backend connection.');
+          setLoading(false);
+        }
+      });
+    return () => { isMounted = false; };
   }, []);
 
   const handleBook = async (e) => {

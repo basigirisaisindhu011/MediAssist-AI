@@ -34,31 +34,30 @@ export const HealthProfile = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState('');
 
-  const fetchProfile = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await healthService.getProfile();
-      if (data) {
-        setHeightCm(data.heightCm || 175);
-        setWeightKg(data.weightKg || 72);
-        setBloodGroup(data.bloodGroup || 'O+');
-        setAllergies(data.allergies || '');
-        setMedicalHistory(data.medicalHistory || '');
-        setEmergencyContact(data.emergencyContact || '');
-      }
-    } catch (err) {
-      // 404 or profile not found yet is acceptable
-      if (err.response?.status !== 404) {
-        setError('Could not load existing health profile.');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchProfile();
+    let isMounted = true;
+    healthService.getProfile()
+      .then((data) => {
+        if (!isMounted) return;
+        if (data) {
+          setHeightCm(data.heightCm || 175);
+          setWeightKg(data.weightKg || 72);
+          setBloodGroup(data.bloodGroup || 'O+');
+          setAllergies(data.allergies || '');
+          setMedicalHistory(data.medicalHistory || '');
+          setEmergencyContact(data.emergencyContact || '');
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        if (err.response?.status !== 404) {
+          setError('Could not load existing health profile.');
+        }
+        setLoading(false);
+      });
+
+    return () => { isMounted = false; };
   }, []);
 
   const handleSave = async (e) => {
@@ -79,11 +78,11 @@ export const HealthProfile = () => {
     try {
       await healthService.updateProfile(payload);
       setSuccess('Health profile updated successfully!');
-    } catch (err) {
+    } catch {
       try {
         await healthService.createProfile(payload);
         setSuccess('Health profile created successfully!');
-      } catch (err2) {
+      } catch {
         setError('Failed to save health profile.');
       }
     } finally {

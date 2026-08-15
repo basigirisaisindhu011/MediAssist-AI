@@ -16,8 +16,6 @@ import {
   Loader2,
   AlertCircle,
   Clock,
-  CheckCircle2,
-  XCircle,
   Plus
 } from 'lucide-react';
 
@@ -30,27 +28,28 @@ export const Dashboard = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const [profileRes, appointmentsRes, recordsRes] = await Promise.allSettled([
-          healthService.getProfile(),
-          appointmentService.getAppointments(),
-          medicalRecordService.getRecords(),
-        ]);
-
+    let isMounted = true;
+    Promise.allSettled([
+      healthService.getProfile(),
+      appointmentService.getAppointments(),
+      medicalRecordService.getRecords(),
+    ])
+      .then(([profileRes, appointmentsRes, recordsRes]) => {
+        if (!isMounted) return;
         if (profileRes.status === 'fulfilled') setProfile(profileRes.value);
         if (appointmentsRes.status === 'fulfilled') setAppointments(appointmentsRes.value || []);
         if (recordsRes.status === 'fulfilled') setRecords(recordsRes.value || []);
-      } catch (err) {
-        setError('Failed to load dashboard data. Please try refreshing.');
-      } finally {
         setLoading(false);
-      }
-    };
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setError('Failed to load dashboard data. Please try refreshing.');
+        setLoading(false);
+      });
 
-    fetchDashboardData();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const upcomingAppointments = appointments

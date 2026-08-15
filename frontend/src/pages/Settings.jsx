@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
-import { Settings as SettingsIcon, User, Lock, Moon, Shield, CheckCircle2 } from 'lucide-react';
+import { Settings as SettingsIcon, User, Moon, CheckCircle2 } from 'lucide-react';
 
 export const Settings = () => {
   const { user } = useAuth();

@@ -7,10 +7,7 @@ import {
   FileText,
   Shield,
   ArrowRight,
-  Sparkles,
-  CheckCircle2,
-  Lock,
-  UserCheck
+  Sparkles
 } from 'lucide-react';
 
 export const Landing = () => {
