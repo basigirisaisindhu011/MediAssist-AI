@@ -4,7 +4,21 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Stethoscope, Lock, Mail, User, Shield, Loader2, AlertCircle, Phone } from 'lucide-react';
+import {
+  Stethoscope,
+  Lock,
+  Mail,
+  User,
+  Shield,
+  Loader2,
+  AlertCircle,
+  Phone,
+  Eye,
+  EyeOff,
+  Sparkles,
+  ArrowRight,
+  CheckCircle2
+} from 'lucide-react';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Full name must be at least 2 characters'),
@@ -18,6 +32,7 @@ export const Register = () => {
   const { register: registerAuth } = useAuth();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -56,134 +71,167 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 px-4 py-12">
-      <div className="w-full max-w-md space-y-6">
-        <div className="text-center">
-          <Link to="/" className="inline-flex items-center space-x-2">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-600 to-teal-500 flex items-center justify-center text-white shadow-lg shadow-sky-500/20">
-              <Stethoscope className="w-7 h-7" />
-            </div>
-            <span className="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-sky-600 to-teal-600 dark:from-sky-400 dark:to-teal-400 bg-clip-text text-transparent">
+    <div className="min-h-screen flex bg-slate-950 text-slate-100">
+      {/* Left Visual Panel */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-slate-900 via-teal-950 to-sky-950 p-12 flex-col justify-between border-r border-slate-800">
+        <div className="relative z-10 flex items-center space-x-3">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-teal-400 to-sky-500 flex items-center justify-center text-white shadow-xl">
+            <Stethoscope className="w-6 h-6" />
+          </div>
+          <div>
+            <span className="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-teal-300 to-sky-400 bg-clip-text text-transparent">
               MediAssist AI
             </span>
-          </Link>
-          <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Create Your Account
-          </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Join MediAssist-AI to start managing your health & AI care
-          </p>
+            <span className="text-xs block font-semibold text-slate-400 -mt-1">
+              Patient Care & AI Intelligence
+            </span>
+          </div>
         </div>
 
-        <div className="glass-card p-6 sm:p-8">
+        <div className="relative z-10 space-y-6 my-auto">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20 text-xs font-semibold">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Join 10,000+ Active Patients</span>
+          </div>
+          <h1 className="text-4xl font-extrabold tracking-tight leading-tight max-w-lg">
+            Create Your Smart Health Account Today
+          </h1>
+          <p className="text-slate-400 text-sm leading-relaxed max-w-md">
+            Gain immediate access to AI-assisted symptom checks, risk assessments, digital health profile tracking, and secure medical document storage.
+          </p>
+
+          <div className="space-y-3 pt-2">
+            <div className="flex items-center space-x-3 text-xs text-slate-300">
+              <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
+              <span>Real-time AI symptom assessment & specialist routing</span>
+            </div>
+            <div className="flex items-center space-x-3 text-xs text-slate-300">
+              <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
+              <span>Personalized health risk scoring with Recharts analytics</span>
+            </div>
+            <div className="flex items-center space-x-3 text-xs text-slate-300">
+              <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0" />
+              <span>Clinical document summarization and record vault</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative z-10 text-xs text-slate-500">
+          &copy; {new Date().getFullYear()} MediAssist AI Platform
+        </div>
+      </div>
+
+      {/* Right Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12">
+        <div className="w-full max-w-md space-y-8">
+          <div className="text-center lg:text-left space-y-2">
+            <h2 className="text-3xl font-extrabold tracking-tight text-slate-100">
+              Create Patient Account
+            </h2>
+            <p className="text-sm text-slate-400">
+              Fill in your information to register for the AI portal
+            </p>
+          </div>
+
           {serverError && (
-            <div className="mb-6 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-400 text-sm flex items-start space-x-2">
-              <AlertCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
+            <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm flex items-start space-x-3 animate-fade-in">
+              <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
               <span>{serverError}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">
                 Full Name
               </label>
               <div className="relative">
-                <User className="w-5 h-5 text-slate-400 absolute left-3 top-3" />
+                <User className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
                 <input
                   type="text"
                   {...register('name')}
                   placeholder="Jane Doe"
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 transition-all ${
-                    errors.name
-                      ? 'border-rose-500 focus:ring-rose-500'
-                      : 'border-slate-300 dark:border-slate-700 focus:ring-sky-500'
+                  className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-slate-900/80 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 transition-all text-sm ${
+                    errors.name ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-800 focus:border-teal-500 focus:ring-teal-500/20'
                   }`}
                 />
               </div>
-              {errors.name && (
-                <p className="mt-1 text-xs text-rose-500">{errors.name.message}</p>
-              )}
+              {errors.name && <p className="mt-1 text-xs text-rose-400">{errors.name.message}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="w-5 h-5 text-slate-400 absolute left-3 top-3" />
+                <Mail className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
                 <input
                   type="email"
                   {...register('email')}
                   placeholder="jane.doe@example.com"
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 transition-all ${
-                    errors.email
-                      ? 'border-rose-500 focus:ring-rose-500'
-                      : 'border-slate-300 dark:border-slate-700 focus:ring-sky-500'
+                  className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-slate-900/80 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 transition-all text-sm ${
+                    errors.email ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-800 focus:border-teal-500 focus:ring-teal-500/20'
                   }`}
                 />
               </div>
-              {errors.email && (
-                <p className="mt-1 text-xs text-rose-500">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="mt-1 text-xs text-rose-400">{errors.email.message}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">
                 Phone Number
               </label>
               <div className="relative">
-                <Phone className="w-5 h-5 text-slate-400 absolute left-3 top-3" />
+                <Phone className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
                 <input
                   type="tel"
                   {...register('phone')}
                   placeholder="+1 (555) 000-0000"
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 transition-all ${
-                    errors.phone
-                      ? 'border-rose-500 focus:ring-rose-500'
-                      : 'border-slate-300 dark:border-slate-700 focus:ring-sky-500'
+                  className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-slate-900/80 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 transition-all text-sm ${
+                    errors.phone ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-800 focus:border-teal-500 focus:ring-teal-500/20'
                   }`}
                 />
               </div>
-              {errors.phone && (
-                <p className="mt-1 text-xs text-rose-500">{errors.phone.message}</p>
-              )}
+              {errors.phone && <p className="mt-1 text-xs text-rose-400">{errors.phone.message}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">
                 Password
               </label>
               <div className="relative">
-                <Lock className="w-5 h-5 text-slate-400 absolute left-3 top-3" />
+                <Lock className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   {...register('password')}
                   placeholder="••••••••"
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 transition-all ${
-                    errors.password
-                      ? 'border-rose-500 focus:ring-rose-500'
-                      : 'border-slate-300 dark:border-slate-700 focus:ring-sky-500'
+                  className={`w-full pl-11 pr-11 py-2.5 rounded-xl border bg-slate-900/80 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 transition-all text-sm ${
+                    errors.password ? 'border-rose-500 focus:ring-rose-500' : 'border-slate-800 focus:border-teal-500 focus:ring-teal-500/20'
                   }`}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-3.5 text-slate-500 hover:text-slate-300 focus:outline-none"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
-              {errors.password && (
-                <p className="mt-1 text-xs text-rose-500">{errors.password.message}</p>
-              )}
+              {errors.password && <p className="mt-1 text-xs text-rose-400">{errors.password.message}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">
                 Account Role
               </label>
               <div className="relative">
-                <Shield className="w-5 h-5 text-slate-400 absolute left-3 top-3" />
+                <Shield className="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" />
                 <select
                   {...register('role')}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all cursor-not-allowed opacity-80"
+                  className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-800 bg-slate-900/50 text-slate-400 text-sm cursor-not-allowed"
                   disabled
                 >
-                  <option value="PATIENT">Patient</option>
+                  <option value="PATIENT">Patient Account</option>
                 </select>
               </div>
             </div>
@@ -191,24 +239,27 @@ export const Register = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full mt-2 py-3 px-4 rounded-xl text-white font-semibold bg-gradient-to-r from-sky-600 to-teal-600 hover:from-sky-700 hover:to-teal-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-sky-500/20 flex items-center justify-center space-x-2 transition-all"
+              className="w-full py-3.5 px-4 rounded-xl text-white font-bold bg-gradient-to-r from-teal-500 to-sky-500 hover:from-teal-600 hover:to-sky-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-teal-500/20 flex items-center justify-center space-x-2 transition-all hover:scale-[1.01]"
             >
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  <span>Registering...</span>
+                  <span>Creating Account...</span>
                 </>
               ) : (
-                <span>Create Account</span>
+                <>
+                  <span>Create Patient Account</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
               )}
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
+          <div className="pt-4 text-center text-sm text-slate-400 border-t border-slate-800">
             Already have an account?{' '}
             <Link
               to="/login"
-              className="font-semibold text-sky-600 dark:text-sky-400 hover:underline"
+              className="font-bold text-teal-400 hover:text-teal-300 hover:underline"
             >
               Sign In
             </Link>
@@ -220,4 +271,3 @@ export const Register = () => {
 };
 
 export default Register;
-

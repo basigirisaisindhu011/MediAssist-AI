@@ -72,7 +72,7 @@ Recommendations: Initiate low-glycemic dietary plan, increase aerobic physical a
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header Banner */}
-      <div className="glass-panel p-6 sm:p-8 bg-gradient-to-r from-indigo-600/90 to-sky-600/90 text-white rounded-2xl shadow-xl">
+      <div className="glass-panel p-6 sm:p-8 bg-gradient-to-r from-indigo-600/90 via-sky-600/90 to-teal-600/90 text-white rounded-2xl shadow-2xl border border-slate-800">
         <div className="flex items-center space-x-3 mb-2">
           <div className="p-2.5 rounded-xl bg-white/20 backdrop-blur-md">
             <FileText className="w-6 h-6 text-white" />
@@ -81,15 +81,15 @@ Recommendations: Initiate low-glycemic dietary plan, increase aerobic physical a
             AI Medical Report Summarizer
           </h1>
         </div>
-        <p className="text-indigo-100 text-sm sm:text-base max-w-xl">
-          Paste diagnostic notes, lab findings, or upload report files to generate easy-to-understand executive summaries and extracted clinical metrics.
+        <p className="text-indigo-100 text-sm sm:text-base max-w-xl leading-relaxed">
+          Paste complex clinical notes, discharge summaries, or upload lab report files to extract structured lab metrics and readable executive summaries.
         </p>
       </div>
 
       {/* Main Input Form */}
-      <div className="glass-card p-6 sm:p-8 space-y-6">
+      <div className="glass-card p-6 sm:p-8 space-y-6 border border-slate-800">
         {error && (
-          <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-400 text-sm flex items-start space-x-2">
+          <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm flex items-start space-x-3">
             <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
@@ -97,19 +97,19 @@ Recommendations: Initiate low-glycemic dietary plan, increase aerobic physical a
 
         <form onSubmit={handleSummarize} className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200">
-              Clinical Report Text
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
+              Clinical Report Content
             </label>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               <button
                 type="button"
                 onClick={() => setDocumentText(sampleReportText)}
-                className="text-xs font-semibold text-sky-600 dark:text-sky-400 hover:underline"
+                className="text-xs font-bold text-sky-400 hover:underline"
               >
-                Load Sample Report
+                Load Sample Lab Report
               </button>
-              <span className="text-slate-300 dark:text-slate-700">|</span>
-              <label className="cursor-pointer inline-flex items-center space-x-1 text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline">
+              <span className="text-slate-700">|</span>
+              <label className="cursor-pointer inline-flex items-center space-x-1.5 text-xs font-bold text-teal-400 hover:underline">
                 <Upload className="w-3.5 h-3.5" />
                 <span>Upload .txt File</span>
                 <input
@@ -126,14 +126,14 @@ Recommendations: Initiate low-glycemic dietary plan, increase aerobic physical a
             rows={8}
             value={documentText}
             onChange={(e) => setDocumentText(e.target.value)}
-            placeholder="Paste lab results, doctor consultation notes, or hospital discharge summary here..."
-            className="w-full p-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 font-mono text-sm leading-relaxed"
+            placeholder="Paste lab test findings, consultation notes, or discharge details here..."
+            className="w-full p-4 rounded-xl border border-slate-800 bg-slate-900/80 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 font-mono text-sm leading-relaxed"
           />
 
           <button
             type="submit"
             disabled={loading || !documentText.trim()}
-            className="w-full py-3.5 px-4 rounded-xl text-white font-bold bg-gradient-to-r from-indigo-600 to-sky-600 hover:from-indigo-700 hover:to-sky-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-indigo-500/20 flex items-center justify-center space-x-2 transition-all"
+            className="w-full py-4 px-4 rounded-xl text-white font-extrabold bg-gradient-to-r from-indigo-600 via-sky-600 to-teal-500 hover:from-indigo-700 hover:to-teal-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-indigo-500/20 flex items-center justify-center space-x-2 transition-all hover:scale-[1.01]"
           >
             {loading ? (
               <>
@@ -150,15 +150,23 @@ Recommendations: Initiate low-glycemic dietary plan, increase aerobic physical a
         </form>
       </div>
 
-      {/* Results Section */}
+      {/* Loading Skeleton */}
+      {loading && (
+        <div className="glass-card p-6 sm:p-8 space-y-4 border border-slate-800 animate-pulse">
+          <div className="h-6 w-1/3 rounded-lg skeleton-shimmer" />
+          <div className="h-24 rounded-xl skeleton-shimmer" />
+        </div>
+      )}
+
+      {/* Output Section */}
       {result && (
-        <div className="glass-card p-6 sm:p-8 space-y-6 border-l-4 border-l-indigo-500 animate-fade-in">
-          <div className="border-b border-slate-200 dark:border-slate-800 pb-4">
-            <h2 className="text-xl font-extrabold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
-              <FileText className="w-5 h-5 text-indigo-600" />
+        <div className="glass-card p-6 sm:p-8 space-y-6 border-l-4 border-l-indigo-500 border-slate-800 animate-slide-up shadow-2xl">
+          <div className="border-b border-slate-800 pb-4">
+            <h2 className="text-xl font-extrabold text-slate-100 flex items-center space-x-2">
+              <FileText className="w-5 h-5 text-indigo-400" />
               <span>AI Executive Summary</span>
             </h2>
-            <p className="text-sm text-slate-700 dark:text-slate-300 mt-3 leading-relaxed p-4 rounded-xl bg-slate-100 dark:bg-slate-800/80">
+            <p className="text-sm text-slate-200 mt-3 leading-relaxed p-4 rounded-xl bg-slate-900/80 border border-slate-800">
               {result.summary}
             </p>
           </div>
@@ -166,23 +174,23 @@ Recommendations: Initiate low-glycemic dietary plan, increase aerobic physical a
           {/* Extracted Metrics Table */}
           {result.key_metrics && Object.keys(result.key_metrics).length > 0 && (
             <div className="space-y-3">
-              <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-2">
-                <Table className="w-4 h-4 text-indigo-600" />
+              <h3 className="text-sm font-bold text-slate-200 flex items-center space-x-2">
+                <Table className="w-4 h-4 text-indigo-400" />
                 <span>Extracted Lab Metrics</span>
               </h3>
-              <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
+              <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/60">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">
+                  <thead className="bg-slate-800/80 text-slate-300 font-extrabold text-xs uppercase tracking-wider">
                     <tr>
-                      <th className="px-4 py-2.5">Clinical Metric</th>
-                      <th className="px-4 py-2.5">Extracted Value</th>
+                      <th className="px-4 py-3">Clinical Metric</th>
+                      <th className="px-4 py-3">Extracted Value</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                  <tbody className="divide-y divide-slate-800">
                     {Object.entries(result.key_metrics).map(([key, val]) => (
                       <tr key={key}>
-                        <td className="px-4 py-2.5 font-medium capitalize">{key.replace(/_/g, ' ')}</td>
-                        <td className="px-4 py-2.5 text-slate-600 dark:text-slate-400">{String(val)}</td>
+                        <td className="px-4 py-3 font-semibold capitalize text-slate-200">{key.replace(/_/g, ' ')}</td>
+                        <td className="px-4 py-3 text-slate-400 font-medium">{String(val)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -191,17 +199,17 @@ Recommendations: Initiate low-glycemic dietary plan, increase aerobic physical a
             </div>
           )}
 
-          {/* Action Recommendations */}
+          {/* Clinical Recommendations */}
           {result.recommendations && result.recommendations.length > 0 && (
             <div className="space-y-3">
-              <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-teal-600" />
+              <h3 className="text-sm font-bold text-slate-200 flex items-center space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-teal-400" />
                 <span>Clinical Recommendations</span>
               </h3>
-              <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+              <ul className="space-y-2.5 text-sm text-slate-300">
                 {result.recommendations.map((rec, idx) => (
-                  <li key={idx} className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 flex items-start space-x-2">
-                    <span className="font-bold text-indigo-600">•</span>
+                  <li key={idx} className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-start space-x-2.5">
+                    <span className="font-bold text-indigo-400">•</span>
                     <span>{rec}</span>
                   </li>
                 ))}
@@ -209,11 +217,11 @@ Recommendations: Initiate low-glycemic dietary plan, increase aerobic physical a
             </div>
           )}
 
-          {/* MANDATORY AI DISCLAIMER */}
-          <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-medium flex items-start space-x-3">
-            <ShieldAlert className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+          {/* MANDATORY DISCLAIMER */}
+          <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs sm:text-sm font-medium flex items-start space-x-3">
+            <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
             <span>
-              AI-generated information is not a medical diagnosis. Consult a qualified healthcare professional.
+              AI report summaries are automated clinical aids and do not replace professional lab interpretation by a physician.
             </span>
           </div>
         </div>

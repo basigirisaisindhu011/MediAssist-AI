@@ -58,7 +58,7 @@ export const HealthRiskEvaluator = () => {
 
   const chartData = result
     ? [
-        { name: 'Calculated Risk', value: result.risk_score },
+        { name: 'Calculated Risk Score', value: result.risk_score },
         { name: 'Optimal Baseline', value: Math.max(0, 100 - result.risk_score) },
       ]
     : [];
@@ -66,18 +66,18 @@ export const HealthRiskEvaluator = () => {
   const getRiskCategoryColor = (category) => {
     switch (category?.toUpperCase()) {
       case 'HIGH':
-        return 'text-rose-600 dark:text-rose-400 bg-rose-100 dark:bg-rose-950 border-rose-300';
+        return 'text-rose-400 bg-rose-500/15 border-rose-500/30';
       case 'MODERATE':
-        return 'text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-950 border-amber-300';
+        return 'text-amber-400 bg-amber-500/15 border-amber-500/30';
       default:
-        return 'text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950 border-emerald-300';
+        return 'text-emerald-400 bg-emerald-500/15 border-emerald-500/30';
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header Banner */}
-      <div className="glass-panel p-6 sm:p-8 bg-gradient-to-r from-teal-600/90 to-emerald-600/90 text-white rounded-2xl shadow-xl">
+      <div className="glass-panel p-6 sm:p-8 bg-gradient-to-r from-teal-600/90 via-emerald-600/90 to-sky-600/90 text-white rounded-2xl shadow-2xl border border-slate-800">
         <div className="flex items-center space-x-3 mb-2">
           <div className="p-2.5 rounded-xl bg-white/20 backdrop-blur-md">
             <HeartPulse className="w-6 h-6 text-white" />
@@ -86,15 +86,15 @@ export const HealthRiskEvaluator = () => {
             Health Risk Evaluator
           </h1>
         </div>
-        <p className="text-teal-100 text-sm sm:text-base max-w-xl">
-          Enter clinical vitals to receive an automated AI assessment of cardiovascular and metabolic risk score.
+        <p className="text-teal-100 text-sm sm:text-base max-w-xl leading-relaxed">
+          Input clinical vitals to generate a predictive cardiovascular and metabolic risk score with Recharts analytics and actionable clinical guidelines.
         </p>
       </div>
 
-      {/* Main Input Form */}
-      <div className="glass-card p-6 sm:p-8 space-y-6">
+      {/* Main Form */}
+      <div className="glass-card p-6 sm:p-8 space-y-6 border border-slate-800">
         {error && (
-          <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-400 text-sm flex items-start space-x-2">
+          <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm flex items-start space-x-3">
             <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
@@ -103,7 +103,7 @@ export const HealthRiskEvaluator = () => {
         <form onSubmit={handleEvaluate} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
                 Age (Years)
               </label>
               <input
@@ -112,12 +112,12 @@ export const HealthRiskEvaluator = () => {
                 max="120"
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900/80 text-slate-100 focus:ring-2 focus:ring-teal-500 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
                 Body Mass Index (BMI)
               </label>
               <input
@@ -125,48 +125,48 @@ export const HealthRiskEvaluator = () => {
                 step="0.1"
                 value={bmi}
                 onChange={(e) => setBmi(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900/80 text-slate-100 focus:ring-2 focus:ring-teal-500 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
                 Systolic BP (mmHg)
               </label>
               <input
                 type="number"
                 value={bpSys}
                 onChange={(e) => setBpSys(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900/80 text-slate-100 focus:ring-2 focus:ring-teal-500 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
                 Diastolic BP (mmHg)
               </label>
               <input
                 type="number"
                 value={bpDia}
                 onChange={(e) => setBpDia(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900/80 text-slate-100 focus:ring-2 focus:ring-teal-500 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
                 Fasting Glucose (mg/dL)
               </label>
               <input
                 type="number"
                 value={glucose}
                 onChange={(e) => setGlucose(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900/80 text-slate-100 focus:ring-2 focus:ring-teal-500 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
                 Exercise (Days / Week)
               </label>
               <input
@@ -175,7 +175,7 @@ export const HealthRiskEvaluator = () => {
                 max="7"
                 value={exerciseDays}
                 onChange={(e) => setExerciseDays(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900/80 text-slate-100 focus:ring-2 focus:ring-teal-500 text-sm"
               />
             </div>
           </div>
@@ -186,9 +186,9 @@ export const HealthRiskEvaluator = () => {
               id="smokerToggle"
               checked={smoker}
               onChange={(e) => setSmoker(e.target.checked)}
-              className="w-4 h-4 rounded text-teal-600 focus:ring-teal-500 border-slate-300 dark:border-slate-700"
+              className="w-4.5 h-4.5 rounded text-teal-500 focus:ring-teal-500 border-slate-800 bg-slate-900"
             />
-            <label htmlFor="smokerToggle" className="text-sm text-slate-700 dark:text-slate-300 font-medium">
+            <label htmlFor="smokerToggle" className="text-sm text-slate-300 font-semibold cursor-pointer">
               Current Tobacco / Nicotine User
             </label>
           </div>
@@ -196,7 +196,7 @@ export const HealthRiskEvaluator = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-4 rounded-xl text-white font-bold bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-teal-500/20 flex items-center justify-center space-x-2 transition-all"
+            className="w-full py-4 px-4 rounded-xl text-white font-extrabold bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-teal-500/20 flex items-center justify-center space-x-2 transition-all hover:scale-[1.01]"
           >
             {loading ? (
               <>
@@ -213,16 +213,24 @@ export const HealthRiskEvaluator = () => {
         </form>
       </div>
 
-      {/* Results & Visualization Section */}
+      {/* Loading State */}
+      {loading && (
+        <div className="glass-card p-6 sm:p-8 space-y-4 border border-slate-800 animate-pulse">
+          <div className="h-6 w-1/3 rounded-lg skeleton-shimmer" />
+          <div className="h-40 rounded-xl skeleton-shimmer" />
+        </div>
+      )}
+
+      {/* Output Section */}
       {result && (
-        <div className="glass-card p-6 sm:p-8 space-y-6 border-l-4 border-l-teal-500 animate-fade-in">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div className="glass-card p-6 sm:p-8 space-y-6 border-l-4 border-l-teal-500 border-slate-800 animate-slide-up shadow-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
             <div>
-              <h2 className="text-xl font-extrabold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
-                <Activity className="w-5 h-5 text-teal-600" />
+              <h2 className="text-xl font-extrabold text-slate-100 flex items-center space-x-2">
+                <Activity className="w-5 h-5 text-teal-400" />
                 <span>AI Risk Assessment Output</span>
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <p className="text-xs text-slate-400 mt-1 font-medium">
                 Model confidence: {(result.confidence * 100).toFixed(0)}%
               </p>
             </div>
@@ -237,42 +245,42 @@ export const HealthRiskEvaluator = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             {/* Recharts Visualization */}
-            <div className="h-56 flex flex-col items-center justify-center">
+            <div className="h-60 flex flex-col items-center justify-center relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={chartData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={55}
-                    outerRadius={80}
+                    innerRadius={60}
+                    outerRadius={85}
                     paddingAngle={5}
                     dataKey="value"
                   >
                     <Cell fill={result.risk_score > 50 ? '#f43f5e' : '#10b981'} />
-                    <Cell fill="#cbd5e1" />
+                    <Cell fill="#334155" />
                   </Pie>
                   <Tooltip />
                 </PieChart>
               </ResponsiveContainer>
-              <div className="text-center -mt-36">
-                <span className="text-3xl font-extrabold text-slate-900 dark:text-slate-100">
+              <div className="text-center -mt-36 pointer-events-none">
+                <span className="text-4xl font-extrabold text-slate-100">
                   {result.risk_score}
                 </span>
-                <span className="text-xs block font-semibold text-slate-500 dark:text-slate-400">/ 100 Score</span>
+                <span className="text-xs block font-bold text-slate-400">/ 100 Score</span>
               </div>
             </div>
 
-            {/* Recommendations */}
+            {/* Recommendations List */}
             <div className="space-y-4">
-              <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-teal-600" />
-                <span>Clinical Recommendations</span>
+              <h3 className="text-sm font-bold text-slate-200 flex items-center space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-teal-400" />
+                <span>Clinical Action Plan</span>
               </h3>
-              <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+              <ul className="space-y-2.5 text-sm text-slate-300">
                 {result.recommendations?.map((rec, idx) => (
-                  <li key={idx} className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 flex items-start space-x-2">
-                    <span className="font-bold text-teal-600">•</span>
+                  <li key={idx} className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-start space-x-2.5">
+                    <span className="font-bold text-teal-400">•</span>
                     <span>{rec}</span>
                   </li>
                 ))}
@@ -280,11 +288,11 @@ export const HealthRiskEvaluator = () => {
             </div>
           </div>
 
-          {/* MANDATORY AI DISCLAIMER */}
-          <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-medium flex items-start space-x-3">
-            <ShieldAlert className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+          {/* MANDATORY DISCLAIMER */}
+          <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs sm:text-sm font-medium flex items-start space-x-3">
+            <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
             <span>
-              AI-generated information is not a medical diagnosis. Consult a qualified healthcare professional.
+              AI-generated risk scores are informational models and do not constitute a formal diagnosis. Always consult a physician.
             </span>
           </div>
         </div>

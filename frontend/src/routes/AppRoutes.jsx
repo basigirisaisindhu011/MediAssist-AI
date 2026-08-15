@@ -7,6 +7,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Dashboard from '../pages/Dashboard';
 import SymptomChecker from '../pages/SymptomChecker';
+import AiAssistant from '../pages/AiAssistant';
 import HealthRiskEvaluator from '../pages/HealthRiskEvaluator';
 import ReportSummarizer from '../pages/ReportSummarizer';
 import Appointments from '../pages/Appointments';
@@ -32,6 +33,7 @@ export const AppRoutes = () => {
       >
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/symptom-checker" element={<SymptomChecker />} />
+        <Route path="/ai-assistant" element={<AiAssistant />} />
         <Route path="/risk-evaluator" element={<HealthRiskEvaluator />} />
         <Route path="/report-summarizer" element={<ReportSummarizer />} />
         <Route path="/appointments" element={<Appointments />} />
